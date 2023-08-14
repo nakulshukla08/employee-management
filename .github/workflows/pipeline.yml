@@ -1,0 +1,21 @@
+name: Maven CI
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build with Maven
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Build with Maven
+        run: ./mvnw clean install
