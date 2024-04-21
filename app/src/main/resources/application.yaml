@@ -1,0 +1,24 @@
+# Spring configs
+
+server:
+  servlet:
+    context-path: /employee-management/api
+
+spring.jpa.properties.hibernate.show_sql: true
+spring.jpa.properties.hibernate.use_sql_comments: true
+spring.jpa.properties.hibernate.format_sql: true
+
+#Spring Management Configs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, env
+  endpoint:
+    env:
+      show-values: ALWAYS
+
+# Custom Configs
+
+employee-management.api.enabled-module: employee-profile,employee-payroll

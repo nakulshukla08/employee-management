@@ -11,12 +11,19 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
+        </dependency>
+    </dependencies>
     <modules>
         <module>parent</module>
         <module>events</module>
         <module>employee-profile</module>
         <module>employee-payroll</module>
-        <module>api-gw</module>
+        <module>web</module>
         <module>app</module>
     </modules>
 </project>
