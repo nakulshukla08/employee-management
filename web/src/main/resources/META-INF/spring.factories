@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.tech.employee_management.web.config.ApigwAutoConfig

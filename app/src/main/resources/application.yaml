@@ -24,3 +24,5 @@ management:
 employee-management:
   api:
     enabled-module: employee-profile, employee-payroll
+
+payroll.service.url: http://localhost:9090/employee-management/api/payroll
