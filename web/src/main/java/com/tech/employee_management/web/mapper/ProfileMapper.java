@@ -3,6 +3,8 @@ package com.tech.employee_management.web.mapper;
 import com.tech.employee_management.api.profile.ProfileResponse;
 import com.tech.employee_management.web.model.ProfileApiResponse;
 
+import java.util.Objects;
+
 public class ProfileMapper implements Mapper<ProfileResponse, ProfileApiResponse>{
     @Override
     public ProfileApiResponse map(ProfileResponse input) {
@@ -15,5 +17,18 @@ public class ProfileMapper implements Mapper<ProfileResponse, ProfileApiResponse
             response.setSalary(input.getPayroll().getSalaryAmount());
         }
         return response;
+    }
+
+    @Override
+    public ProfileResponse reverseMap(ProfileApiResponse input) {
+
+        Objects.requireNonNull(input);
+        return ProfileResponse.builder()
+                .employeeId(input.getEmployeeId())
+                .departmentName(input.getDepartmentName())
+                .firstName(input.getFirstName())
+                .lastName(input.getLastName())
+                .build();
+
     }
 }

@@ -4,7 +4,7 @@ package com.tech.employee_management.web.controller;
 import com.tech.employee_management.api.profile.ProfileApi;
 import com.tech.employee_management.api.profile.ProfileRequest;
 import com.tech.employee_management.api.profile.ProfileResponse;
-import com.tech.employee_management.web.annotation.ConditionalController;
+import com.tech.employee_management.web.annotation.FunctionalModule;
 import com.tech.employee_management.web.mapper.Mapper;
 import com.tech.employee_management.web.model.CreateProfile;
 import com.tech.employee_management.web.model.ProfileApiResponse;
@@ -16,10 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+//@RestController
 @AllArgsConstructor
 @Slf4j
-@ConditionalController(moduleName = "employee-profile")
+//@FunctionalModule(name = "employee-profile")
 public class EmployeeProfileController {
 
     private ProfileApi profileApi;

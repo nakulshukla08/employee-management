@@ -10,15 +10,15 @@ import com.tech.employee_management.web.model.ProfileApiResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class ApigwAutoConfig {
 
-    @Bean
+    //@Bean
     public Mapper<GetPayrollResponse, PayrollApiResponse> payrollMapper(){
         return new PayrollMapper();
     }
 
-    @Bean
+   // @Bean
     public Mapper<ProfileResponse, ProfileApiResponse> profileMapper(){
         return new ProfileMapper();
     }

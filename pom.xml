@@ -23,7 +23,6 @@
         <module>events</module>
         <module>employee-profile</module>
         <module>employee-payroll</module>
-        <module>web</module>
         <module>app</module>
     </modules>
 </project>

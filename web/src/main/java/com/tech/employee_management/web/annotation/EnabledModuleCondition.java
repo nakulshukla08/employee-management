@@ -7,6 +7,8 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class EnabledModuleCondition implements Condition {
@@ -22,11 +24,14 @@ public class EnabledModuleCondition implements Condition {
         if(enabledModule == null || enabledModule.isBlank()){
             return true;
         }
-        MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(ConditionalController.class.getName());
+        MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(FunctionalModule.class.getName());
         if (attrs != null) {
-            for (Object value : attrs.get("moduleName")) {
+            for (Object value : attrs.get("name")) {
                 String[] enabledModules = enabledModule.split(",");
-                if (Arrays.asList(enabledModules).contains(value)) {
+                List<String> trimmedEnabledModules = Arrays.stream(enabledModules)
+                        .map(String::trim)
+                        .collect(Collectors.toList());
+                if (trimmedEnabledModules.contains(value.toString().trim())) {
                     log.info("Enabling controller for module : {}", value);
                     return true;
                 }

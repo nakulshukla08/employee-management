@@ -13,6 +13,6 @@ public class ProfileEvent extends BaseEvent{
     private EmployeeState employeeState;
 
     enum EventType {
-        CREATED, UPDATED, DELETED;
+        CREATED, UPDATED, DELETED
     }
 }

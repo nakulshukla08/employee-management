@@ -10,7 +10,6 @@ import com.tech.employee_management.payroll.repo.SalaryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -23,13 +22,15 @@ public class PayrollApiImpl implements PayrollApi {
     @Override
     public GetPayrollResponse getPayroll(GetPayrollRequest request) {
 
-        Optional<Salary> salary = salaryRepository.findByEmployeeId(getInternalId(request.getEmployeeId()));
-        if(salary.isEmpty()){
+        Optional<Salary> salaryOpt = salaryRepository.findByEmployeeId(getInternalId(request.getEmployeeId()));
+        if(salaryOpt.isEmpty()){
             throw new EntityNotFoundException(String.format("Salary not found for employee : %s", request.getEmployeeId()));
         }
-        log.info("salary found : {}", salary.get());
+        Salary salary = salaryOpt.get();
+        log.info("salary found : {}", salary);
         GetPayrollResponse response =  new GetPayrollResponse();
-        Payroll payroll = new Payroll(salary.get().getGrossSalary().toString());
+        response.setEmployeeId(String.valueOf(salary.getEmployeeId()));
+        Payroll payroll = new Payroll(salary.getGrossSalary().toString());
         response.setPayroll(payroll);
         return response;
     }

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.tech.employee_management.payroll.config.PayrollConfig
+config.com.tech.employee_management.payroll.web.PayrollConfig

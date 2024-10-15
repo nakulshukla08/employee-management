@@ -1,11 +1,12 @@
 package com.tech.employee_management.api.profile;
 
 import com.tech.employee_management.domain.payroll.Payroll;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
+
 @Getter
+@Builder
 public class ProfileResponse {
     private String employeeId;
     private String firstName;

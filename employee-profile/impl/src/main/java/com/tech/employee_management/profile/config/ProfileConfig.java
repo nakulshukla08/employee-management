@@ -6,11 +6,14 @@ import com.tech.employee_management.events.profile.ProfileEvent;
 import com.tech.employee_management.profile.impl.ProfileApiImpl;
 import com.tech.employee_management.profile.outbound.async.AsyncGateway;
 import com.tech.employee_management.profile.outbound.async.ProfileSpringEventsGateway;
+import com.tech.employee_management.profile.outbound.sync.PayrolllApiHttpImpl;
 import com.tech.employee_management.profile.repo.DepartmentRepository;
 import com.tech.employee_management.profile.repo.EmployeeRepository;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
@@ -26,8 +29,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 @EntityScan("com.tech.employee_management.profile.entities")
@@ -37,10 +42,23 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class ProfileConfig {
 
+    @Value("${employee-management.api.enabled-module}")
+    private List<String> enabledModules;
+
+    @Value("${payroll.service.url}")
+    private String payrollServiceURL;
+
+
     @Bean
     public ProfileApi profileApi(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, AsyncGateway<ProfileEvent> profileEventPublisher, PayrollApi payrollApi){
-        System.out.println("creating profileApiIMPl");
+
         return new ProfileApiImpl(employeeRepository, departmentRepository, profileEventPublisher, payrollApi);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "deployment.mode", havingValue = "micro")
+    public PayrollApi payrollApi(WebClient.Builder webClientBuilder) {
+        return new PayrolllApiHttpImpl(webClientBuilder, payrollServiceURL);
     }
 
     @Bean

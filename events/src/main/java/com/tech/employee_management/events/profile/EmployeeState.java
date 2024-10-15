@@ -2,7 +2,6 @@ package com.tech.employee_management.events.profile;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.ToString;
 
 @Builder

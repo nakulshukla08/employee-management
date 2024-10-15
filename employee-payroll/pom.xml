@@ -18,5 +18,6 @@
     <modules>
         <module>api</module>
         <module>impl</module>
+        <module>web</module>
     </modules>
 </project>

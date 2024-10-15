@@ -7,6 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Conditional(EnabledModuleCondition.class)
-public @interface ConditionalController {
-    String moduleName();
+public @interface FunctionalModule {
+    String name();
 }

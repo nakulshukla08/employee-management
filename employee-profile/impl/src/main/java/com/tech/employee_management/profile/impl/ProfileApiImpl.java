@@ -17,7 +17,6 @@ import com.tech.employee_management.profile.repo.DepartmentRepository;
 import com.tech.employee_management.profile.repo.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 
@@ -38,7 +37,13 @@ public class ProfileApiImpl implements ProfileApi {
         }
         Employee employee = employeeOpt.get();
         Payroll payroll = getPayroll(request);
-        return new ProfileResponse(String.valueOf(employee.getEmployeeId()), employee.getFirstName(), employee.getLastName(), employee.getDepartment().getDepartmentName(), payroll);
+        return ProfileResponse.builder()
+                .employeeId(String.valueOf(employee.getEmployeeId()))
+                .departmentName(employee.getDepartment().getDepartmentName())
+                .firstName(employee.getLastName())
+                .lastName(employee.getLastName())
+                .payroll(payroll)
+                .build();
     }
 
     private Payroll getPayroll(ProfileRequest request) {
