@@ -10,7 +10,9 @@ import com.tech.employee_management.profile.outbound.async.ProfileSpringEventsGa
 import com.tech.employee_management.profile.outbound.sync.PayrollApiHttpImpl;
 import com.tech.employee_management.profile.repo.DepartmentRepository;
 import com.tech.employee_management.profile.repo.EmployeeRepository;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +49,24 @@ public class ProfileConfig {
             return new ProfileHttpAsyncGateway(payrollApi);
         }
         return new ProfileSpringEventsGateway(eventPublisher);
+    }
+
+    @Bean
+    public ApplicationRunner profileFlywayRunner(DatabaseConfig.ProfileDataSourceProperties properties) {
+        return args -> {
+            String url = properties.getUrl();
+            String username = properties.getUser();
+            String password = properties.getPassword();
+
+            System.out.println("Flyway loading");
+
+            Flyway flyway = Flyway.configure()
+                    .dataSource(url, username, password)
+                    .locations("classpath:db/migration/profile")
+                    .load();
+
+            flyway.migrate();
+        };
     }
 
 }

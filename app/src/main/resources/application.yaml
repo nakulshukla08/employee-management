@@ -41,10 +41,8 @@ profile:
     password: postgres
     url: jdbc:postgresql://localhost:54320/postgres?currentSchema=employee_profile
 
-logging:
-  level:
-    org:
-      springframework:
-        boot:
-          context:
-            properties: DEBUG
+spring:
+  flyway:
+    enabled: false
+
+logging.level.org.flywaydb: DEBUG
