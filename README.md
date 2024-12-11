@@ -61,10 +61,19 @@ In this mode, all the module jars are packaged within a single Jar and the whole
 the modules is just a java method call, by injecting the dependency of corresponding module's api interface. These calls can also use JTA or Spring transactions
 in these calls to support transactional nature if required.
 
+#### Architecture
+
+![Monolith Architecture](docs/monolith-arch.png)
+
 ### Microservice Mode
 
 Each module has a capability to be deployed as an independent runtime. These modules can expose a REST layer for external applications, hiding all the module
 services and repository behind it, acting like a typical n-tier applications.
+
+#### Architecture
+
+
+![Microservice Architecture](docs/microservice-modular.png)
 
 ## Moving from Monolith to Microservice Mode
 
@@ -74,3 +83,4 @@ and some little adjustments.
 ### Steps
 
 * 
+

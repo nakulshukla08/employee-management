@@ -122,6 +122,7 @@
             </activation>
             <build>
                 <finalName>employee-payroll-app</finalName>
+                <directory>${project.basedir}/target/payroll</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
@@ -159,6 +160,7 @@
             </activation>
             <build>
                 <finalName>employee-profile-app</finalName>
+                <directory>${project.basedir}/target/profile</directory>
                 <plugins>
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>

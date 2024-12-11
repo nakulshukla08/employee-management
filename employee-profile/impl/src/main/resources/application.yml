@@ -1,2 +1,8 @@
 deployment.mode: micro
 payroll.service.url: http://localhost:9090/employee-management/api/payroll
+
+profile:
+  datasource:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:54320/postgres?currentSchema=employee_profile

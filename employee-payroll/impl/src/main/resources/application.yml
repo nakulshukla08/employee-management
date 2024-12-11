@@ -1,0 +1,5 @@
+payroll:
+  datasource:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:54320/postgres?currentSchema=employee_payroll

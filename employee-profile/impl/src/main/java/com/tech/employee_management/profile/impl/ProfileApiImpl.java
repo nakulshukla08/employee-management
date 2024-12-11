@@ -17,6 +17,7 @@ import com.tech.employee_management.profile.repo.DepartmentRepository;
 import com.tech.employee_management.profile.repo.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -29,10 +30,11 @@ public class ProfileApiImpl implements ProfileApi {
     private PayrollApi payrollApi;
 
     @Override
+    @Transactional
     public ProfileResponse getEmployeeProfile(ProfileRequest request) {
         String employeeId = request.getProfile().getEmployeeId();
         Optional<Employee> employeeOpt = employeeRepository.findById(Integer.parseInt(employeeId));
-        if(employeeOpt.isEmpty()){
+        if (employeeOpt.isEmpty()) {
             throw new EntityNotFoundException(String.format("Employee not found with id : %s", employeeId));
         }
         Employee employee = employeeOpt.get();
@@ -40,7 +42,7 @@ public class ProfileApiImpl implements ProfileApi {
         return ProfileResponse.builder()
                 .employeeId(String.valueOf(employee.getEmployeeId()))
                 .departmentName(employee.getDepartment().getDepartmentName())
-                .firstName(employee.getLastName())
+                .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .payroll(payroll)
                 .build();
@@ -48,11 +50,11 @@ public class ProfileApiImpl implements ProfileApi {
 
     private Payroll getPayroll(ProfileRequest request) {
         Payroll payroll = null;
-        if(request.isIncludePayroll()){
+        if (request.isIncludePayroll()) {
             GetPayrollRequest payrollRequest = GetPayrollRequest.builder()
-                                                .employeeId(request.getProfile()
-                                                        .getEmployeeId())
-                                                .build();
+                    .employeeId(request.getProfile()
+                            .getEmployeeId())
+                    .build();
             GetPayrollResponse payrollResponse = payrollApi.getPayroll(payrollRequest);
             payroll = payrollResponse.getPayroll();
         }
@@ -60,11 +62,18 @@ public class ProfileApiImpl implements ProfileApi {
     }
 
     @Override
-    public void createEmployeeProfile(ProfileRequest request) {
+    @Transactional
+    public ProfileResponse createEmployeeProfile(ProfileRequest request) {
 
         Employee employee = employeeRepository.save(mapEmployee(request));
         ProfileEvent profileEvent = mapProfileRequestToEvent(employee, request);
         profileEventAsyncGateway.publish(profileEvent);
+        return ProfileResponse.builder()
+                .employeeId(String.valueOf(employee.getEmployeeId()))
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .departmentName(employee.getDepartment().getDepartmentName())
+                .build();
     }
 
     private ProfileEvent mapProfileRequestToEvent(Employee employee, ProfileRequest request) {
@@ -81,12 +90,12 @@ public class ProfileApiImpl implements ProfileApi {
                 .build();
     }
 
-    private Employee mapEmployee(ProfileRequest request){
+    private Employee mapEmployee(ProfileRequest request) {
         EmployeeProfile createProfileRequest = request.getProfile();
         String departmentName = createProfileRequest.getDepartmentName();
 
-        Optional<Department> departmentOpt =  departmentRepository.findByDepartmentName(departmentName);
-        if(departmentOpt.isEmpty()){
+        Optional<Department> departmentOpt = departmentRepository.findByDepartmentName(departmentName);
+        if (departmentOpt.isEmpty()) {
             throw new EntityNotFoundException(String.format("Department not found with name : %s", departmentName));
         }
         Department department = departmentOpt.get();

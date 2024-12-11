@@ -27,7 +27,7 @@ case "$1" in
         ;;
     monolith)
         echo "Building entire project in monolith mode..."
-        ./mvnw clean install
+        ./mvnw -Dmonolith clean install
         ;;
     *)
         echo "Invalid option!"

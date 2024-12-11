@@ -24,7 +24,7 @@ public class EmployeeProfileController {
     private ProfileApi profileApi;
     private Mapper<ProfileResponse, ProfileApiResponse> profileMapper;
 
-    @GetMapping("/test/profile/{employeeId}")
+    @GetMapping("/profile/{employeeId}")
     public ProfileApiResponse getEmployeeProfile(@PathVariable  String employeeId, @RequestParam(required = false) Boolean includePayroll){
         return profileMapper.map(
                 profileApi.getEmployeeProfile(ProfileRequest.builder()
@@ -35,11 +35,11 @@ public class EmployeeProfileController {
                         .build()));
     }
 
-    @PostMapping("/test/profile")
+    @PostMapping("/profile")
     public ResponseEntity<ProfileApiResponse> createEmployeeProfile(@RequestBody CreateProfile createProfile){
 
         log.info("Incoming request to create employee profile : {}",createProfile);
-        profileApi.createEmployeeProfile(ProfileRequest.builder()
+        ProfileResponse response = profileApi.createEmployeeProfile(ProfileRequest.builder()
                         .profile(
                                 EmployeeProfile.builder()
                                 .departmentName(createProfile.getDepartmentName())
@@ -50,6 +50,15 @@ public class EmployeeProfileController {
                         )
                 .build());
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        ProfileApiResponse
+                                .builder()
+                                .employeeId(response.getEmployeeId())
+                                .firstName(response.getFirstName())
+                                .lastName(response.getLastName())
+                                .departmentName(response.getDepartmentName())
+                                .build()
+                );
     }
 }

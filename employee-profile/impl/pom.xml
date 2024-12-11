@@ -102,6 +102,41 @@
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
             </plugin>
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>10.6.0</version> <!-- Use the appropriate Flyway version -->
+                    <executions>
+                        <execution>
+                            <phase>validate</phase> <!-- Run Flyway during this phase -->
+                            <goals>
+                                <goal>migrate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <url>jdbc:postgresql://localhost:54320/postgres</url>
+                        <user>postgres</user>
+                        <password>postgres</password>
+                        <schemas>employee_profile</schemas> <!-- Optional: Specify schemas -->
+                        <locations>filesystem:src/main/resources/db/migration</locations> <!-- Path to your migration scripts -->
+                        <baselineOnMigrate>true</baselineOnMigrate>
+                        <logLevel>DEBUG</logLevel>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.flywaydb</groupId>
+                            <artifactId>flyway-database-postgresql</artifactId>
+                            <version>10.6.0</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <version>42.7.1</version> <!-- PostgreSQL Driver -->
+                        </dependency>
+                    </dependencies>
+                </plugin>
         </plugins>
     </build>
     <repositories>
