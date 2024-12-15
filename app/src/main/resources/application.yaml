@@ -1,0 +1,48 @@
+# Spring configs
+
+server:
+  servlet:
+    context-path: /employee-management/api
+
+#spring:
+#  main:
+#    allow-bean-definition-overriding: true
+
+spring.jpa.properties.hibernate.show_sql: true
+spring.jpa.properties.hibernate.use_sql_comments: true
+spring.jpa.properties.hibernate.format_sql: true
+spring.jpa.hibernate.ddl-auto: update
+#Spring Management Configs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, env, mappings
+  endpoint:
+    env:
+      show-values: ALWAYS
+
+# Custom Configs
+
+employee-management:
+  api:
+    enabled-module: employee-profile, employee-payroll
+
+payroll:
+  service.url: http://localhost:9090/employee-management/api/payroll
+  datasource:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:54320/postgres?currentSchema=employee_payroll
+profile:
+  datasource:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:54320/postgres?currentSchema=employee_profile
+
+spring:
+  flyway:
+    enabled: false
+
+logging.level.org.flywaydb: DEBUG
